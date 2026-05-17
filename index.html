@@ -136,6 +136,19 @@
       background: var(--red);
       box-shadow: 0 0 12px var(--red);
       border-radius: 50%;
+      animation: signalBlink 1.15s infinite;
+    }
+
+    @keyframes signalBlink {
+      0%, 42%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 8px var(--red), 0 0 18px rgba(255, 61, 90, 0.75);
+      }
+
+      50%, 58% {
+        opacity: 0.18;
+        box-shadow: 0 0 2px rgba(255, 61, 90, 0.35);
+      }
     }
 
     .hero {
@@ -311,6 +324,8 @@
       inset: 0;
       background: repeating-linear-gradient(0deg, transparent 0 5px, rgba(255,255,255,0.035) 6px);
       opacity: 0.55;
+      pointer-events: none;
+      z-index: 1;
     }
 
     .mini-screen code {
@@ -322,6 +337,7 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       text-shadow: 0 0 12px rgba(174, 255, 222, 0.24);
+      z-index: 2;
     }
 
     .section {
@@ -1062,7 +1078,7 @@
           <div class="mini-screen">
             <code>
               &gt; creator profile<br />
-              &gt; audio tools first<br />
+              &gt; audio tools connected<br />
               &gt; games connected<br />
               &gt; music connected<br />
               &gt; sound connected<br />
