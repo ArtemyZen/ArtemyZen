@@ -966,10 +966,155 @@
       z-index: 1;
     }
 
+    .signal-game {
+      margin-top: 18px;
+      border-color: rgba(69,223,255,0.24);
+    }
+
+    .game-shell {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .game-screen {
+      position: relative;
+      min-height: 380px;
+      border: 1px solid rgba(195,255,231,0.16);
+      background:
+        radial-gradient(circle at 30% 20%, rgba(69,223,255,0.08), transparent 34%),
+        radial-gradient(circle at 75% 80%, rgba(255,61,90,0.08), transparent 32%),
+        #07100f;
+      box-shadow: inset 0 0 48px rgba(119,255,196,0.06);
+      overflow: hidden;
+      cursor: crosshair;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .game-screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 5px, rgba(255,255,255,0.032) 6px),
+        radial-gradient(circle at center, transparent 50%, rgba(0,0,0,0.35) 100%);
+      z-index: 2;
+    }
+
+    #signalCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    .game-help {
+      position: absolute;
+      left: 14px;
+      bottom: 12px;
+      z-index: 3;
+      color: rgba(216,255,236,0.58);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .game-panel {
+      display: grid;
+      gap: 10px;
+    }
+
+    .game-stat,
+    .game-upgrades {
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.05), transparent 90px),
+        rgba(0,0,0,0.24);
+    }
+
+    .game-label {
+      margin-bottom: 8px;
+      color: var(--dim);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .game-value {
+      color: var(--text);
+      font-size: 34px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      text-shadow: 1px 0 rgba(255,61,90,0.55), -1px 0 rgba(69,223,255,0.45);
+    }
+
+    .game-small {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .upgrade-list {
+      display: grid;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .upgrade-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 9px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.035);
+      color: var(--dim);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .upgrade-row.active {
+      color: #071006;
+      background: var(--green);
+      border-color: rgba(0,0,0,0.35);
+      box-shadow: 0 0 16px rgba(125,255,106,0.14);
+    }
+
+    .game-reset {
+      min-height: 36px;
+      padding: 9px 12px 8px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.055);
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .game-reset:hover {
+      background: rgba(255,61,90,0.14);
+      border-color: rgba(255,61,90,0.34);
+    }
+
     @media (max-width: 960px) {
       .hero,
       .about-contact,
-      .sound-layout {
+      .sound-layout,
+      .game-shell {
         grid-template-columns: 1fr;
       }
 
@@ -1041,6 +1186,10 @@
         display: none;
       }
 
+      .game-screen {
+        min-height: 340px;
+      }
+
       footer {
         display: block;
         line-height: 1.8;
@@ -1061,7 +1210,7 @@
           <div>
             <div class="eyebrow">game design / music / sound / tools</div>
             <h1>Artemy Zen</h1>
-            <p class="tagline"><strong>Games – Music – Sound – Tools.</strong><br />Atmospheric work for interactive media, advertising and experimental projects.</p>
+            <p class="tagline"><strong>Games – Music – Sound – Tools</strong><br />Atmospheric work for interactive media, advertising and experimental projects.</p>
             <p class="hero-copy">I create games, music, sound design and browser-based audio tools. My work lives somewhere between practical production, dirty analog texture, dark atmosphere and playable systems.</p>
           </div>
 
@@ -1358,11 +1507,495 @@
         </section>
       </div>
 
+      <section class="panel section signal-game" id="signal-game">
+        <div class="section-head">
+          <div>
+            <div class="kicker">hidden signal game</div>
+            <h2>Catch the Signal</h2>
+          </div>
+          <p class="section-desc">Tap the screen to send a wave. Catch signal dots, trigger chain waves and unlock five automatic wave modifiers.</p>
+        </div>
+
+        <div class="game-shell">
+          <div class="game-screen" id="signalGameScreen" aria-label="Catch the Signal game area">
+            <canvas id="signalCanvas"></canvas>
+            <div class="game-help">tap / click to transmit wave</div>
+          </div>
+
+          <aside class="game-panel" aria-label="Game stats">
+            <div class="game-stat">
+              <div class="game-label">score</div>
+              <div class="game-value" id="signalScore">0</div>
+            </div>
+
+            <div class="game-stat">
+              <div class="game-label">signals</div>
+              <div class="game-value" id="signalCount">0</div>
+              <p class="game-small" id="waveInfo">Tap the screen. Signals appear gradually and never flood the display.</p>
+            </div>
+
+            <div class="game-upgrades">
+              <div class="game-label">modifiers</div>
+              <div class="upgrade-list">
+                <div class="upgrade-row active" data-mod="range"><span>Range</span><span>1 / 5</span></div>
+                <div class="upgrade-row" data-mod="spread"><span>Spread</span><span>1 / 5</span></div>
+                <div class="upgrade-row" data-mod="width"><span>Width</span><span>1 / 5</span></div>
+                <div class="upgrade-row" data-mod="chain"><span>Chain</span><span>1 / 5</span></div>
+                <div class="upgrade-row" data-mod="echo"><span>Signal Echo</span><span>1 / 5</span></div>
+                <div class="upgrade-row" data-mod="auto"><span>Auto Wave</span><span>0 / 10</span></div>
+              </div>
+            </div>
+
+            <button class="game-reset" id="signalReset" type="button">reset signal</button>
+          </aside>
+        </div>
+      </section>
+
       <footer>
         <span>By Artemy Zen</span>
         <span>2026</span>
       </footer>
     </div>
   </main>
+  <script>
+    (() => {
+      const screen = document.getElementById('signalGameScreen');
+      const canvas = document.getElementById('signalCanvas');
+      const scoreEl = document.getElementById('signalScore');
+      const signalCountEl = document.getElementById('signalCount');
+      const infoEl = document.getElementById('waveInfo');
+      const resetBtn = document.getElementById('signalReset');
+      if (!screen || !canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      const waveModCosts = {
+        range: [0, 10, 28, 62, 115],
+        spread: [0, 16, 38, 78, 135],
+        width: [0, 22, 52, 96, 160],
+        chain: [0, 30, 70, 125, 200],
+        echo: [0, 40, 90, 155, 240]
+      };
+      const autoCosts = [18, 34, 58, 88, 125, 170, 220, 280, 350, 430];
+      const autoIntervals = [5, 4, 3, 2, 1, 0.7, 0.6, 0.5, 0.4, 0.3];
+      const modNames = {
+        range: 'Range',
+        spread: 'Spread',
+        width: 'Width',
+        chain: 'Chain',
+        echo: 'Signal Echo'
+      };
+
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+      let score = 0;
+      let mods = { range: 1, spread: 1, width: 1, chain: 1, echo: 1, auto: 0 };
+      let signals = [];
+      let waves = [];
+      let particles = [];
+      let lastTime = performance.now();
+      let attractAngle = 0;
+      let spawnTimer = 0;
+      let autoTimer = 0;
+      let audioCtx = null;
+
+      function resizeGame() {
+        const rect = screen.getBoundingClientRect();
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = Math.max(320, rect.width);
+        height = Math.max(260, rect.height);
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function rand(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function ensureAudio() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+      }
+
+      function playTone(type) {
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+        gain.connect(filter);
+        filter.connect(audioCtx.destination);
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1400, now);
+
+        if (type === 'wave') {
+          const osc = audioCtx.createOscillator();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(160, now);
+          osc.frequency.exponentialRampToValueAtTime(420, now + 0.12);
+          gain.gain.setValueAtTime(0.0001, now);
+          gain.gain.exponentialRampToValueAtTime(0.075, now + 0.012);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+          osc.connect(gain);
+          osc.start(now);
+          osc.stop(now + 0.2);
+          return;
+        }
+
+        if (type === 'hit') {
+          const osc = audioCtx.createOscillator();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(760, now);
+          osc.frequency.exponentialRampToValueAtTime(1220, now + 0.055);
+          gain.gain.setValueAtTime(0.0001, now);
+          gain.gain.exponentialRampToValueAtTime(0.055, now + 0.008);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.13);
+          osc.connect(gain);
+          osc.start(now);
+          osc.stop(now + 0.15);
+          return;
+        }
+
+        if (type === 'upgrade') {
+          [0, 0.07, 0.14].forEach((offset, index) => {
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime([440, 660, 990][index], now + offset);
+            g.gain.setValueAtTime(0.0001, now + offset);
+            g.gain.exponentialRampToValueAtTime(0.052, now + offset + 0.012);
+            g.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.16);
+            osc.connect(g);
+            g.connect(filter);
+            osc.start(now + offset);
+            osc.stop(now + offset + 0.18);
+          });
+        }
+      }
+
+      function getWaveModLevel(name) {
+        const costs = waveModCosts[name];
+        let next = 1;
+        for (let i = 0; i < costs.length; i += 1) {
+          if (score >= costs[i]) next = i + 1;
+        }
+        return Math.min(next, 5);
+      }
+
+      function getAutoLevel() {
+        let next = 0;
+        for (let i = 0; i < autoCosts.length; i += 1) {
+          if (score >= autoCosts[i]) next = i + 1;
+        }
+        return Math.min(next, 10);
+      }
+
+      function refreshMods() {
+        let upgraded = false;
+        Object.keys(waveModCosts).forEach((name) => {
+          const next = getWaveModLevel(name);
+          if (next > mods[name]) upgraded = true;
+          mods[name] = next;
+        });
+        const nextAuto = getAutoLevel();
+        if (nextAuto > mods.auto) upgraded = true;
+        mods.auto = nextAuto;
+        if (upgraded) playTone('upgrade');
+      }
+
+      function updateUI() {
+        refreshMods();
+        scoreEl.textContent = score;
+        signalCountEl.textContent = signals.length;
+        const autoText = mods.auto > 0 ? `Auto wave every ${autoIntervals[mods.auto - 1]}s.` : 'Auto wave unlocks at 18 points.';
+        infoEl.textContent = `Signal field stable. ${autoText}`;
+
+        document.querySelectorAll('.upgrade-row').forEach((row) => {
+          const name = row.getAttribute('data-mod');
+          const value = name === 'auto' ? mods.auto : mods[name];
+          const max = name === 'auto' ? 10 : 5;
+          const label = row.querySelector('span:last-child');
+          if (label) label.textContent = value + ' / ' + max;
+          row.classList.toggle('active', value > (name === 'auto' ? 0 : 1));
+        });
+      }
+
+      function maxSignals() {
+        return Math.min(8 + Math.floor(score / 35) + mods.echo, 18);
+      }
+
+      function addSignal(count = 1) {
+        const limit = maxSignals();
+        for (let i = 0; i < count && signals.length < limit; i += 1) {
+          signals.push({
+            x: rand(24, width - 24),
+            y: rand(24, height - 24),
+            r: rand(3.2, 5.6),
+            pulse: rand(0, Math.PI * 2),
+            caught: false
+          });
+        }
+        updateUI();
+      }
+
+      function getDirections(x, y, forcedAngle = null) {
+        if (forcedAngle !== null) return [forcedAngle];
+
+        if (mods.spread === 1) {
+          let nearest = null;
+          let best = Infinity;
+          for (const signal of signals) {
+            const dist = Math.hypot(signal.x - x, signal.y - y);
+            if (dist < best) {
+              best = dist;
+              nearest = signal;
+            }
+          }
+          if (nearest) return [Math.atan2(nearest.y - y, nearest.x - x)];
+          attractAngle += 0.7;
+          return [attractAngle];
+        }
+
+        if (mods.spread === 2) return [0, Math.PI];
+        if (mods.spread === 3) return [0, Math.PI / 2, Math.PI, Math.PI * 1.5];
+        if (mods.spread === 4) return [0, Math.PI / 4, Math.PI / 2, Math.PI * 0.75, Math.PI, Math.PI * 1.25, Math.PI * 1.5, Math.PI * 1.75];
+        return [0, Math.PI / 6, Math.PI / 3, Math.PI / 2, Math.PI * 0.66, Math.PI * 0.83, Math.PI, Math.PI * 1.16, Math.PI * 1.33, Math.PI * 1.5, Math.PI * 1.66, Math.PI * 1.83];
+      }
+
+      function spawnWave(x, y, chain = 0, forcedAngle = null, silent = false) {
+        const dirs = getDirections(x, y, forcedAngle);
+        const range = [170, 220, 280, 350, 440][mods.range - 1] * (chain > 0 ? 0.68 : 1);
+        const speed = [300, 330, 365, 400, 440][mods.range - 1];
+        const widthWave = [8, 11, 14, 17, 21][mods.width - 1];
+
+        if (!silent && chain === 0) playTone('wave');
+
+        dirs.forEach((angle) => {
+          waves.push({
+            x,
+            y,
+            angle,
+            dist: 0,
+            range,
+            speed,
+            width: widthWave,
+            chain,
+            life: 1
+          });
+        });
+      }
+
+      function burst(x, y) {
+        for (let i = 0; i < 10; i += 1) {
+          particles.push({
+            x,
+            y,
+            vx: Math.cos(rand(0, Math.PI * 2)) * rand(24, 86),
+            vy: Math.sin(rand(0, Math.PI * 2)) * rand(24, 86),
+            life: rand(0.35, 0.75),
+            maxLife: 0.75
+          });
+        }
+      }
+
+      function captureSignal(signal, chainDepth) {
+        if (signal.caught) return;
+        signal.caught = true;
+        score += 1;
+        playTone('hit');
+        burst(signal.x, signal.y);
+
+        const echoCount = Math.min(1 + mods.echo, 6);
+        const maxChain = mods.chain;
+        if (chainDepth < maxChain) {
+          const base = rand(0, Math.PI * 2);
+          for (let i = 0; i < echoCount; i += 1) {
+            const angle = base + (Math.PI * 2 * i) / echoCount;
+            spawnWave(signal.x, signal.y, chainDepth + 1, angle, true);
+          }
+        }
+
+        signals = signals.filter((s) => !s.caught);
+        updateUI();
+      }
+
+      function update(dt) {
+        for (const wave of waves) {
+          wave.dist += wave.speed * dt;
+          wave.life = 1 - wave.dist / wave.range;
+
+          const headX = wave.x + Math.cos(wave.angle) * wave.dist;
+          const headY = wave.y + Math.sin(wave.angle) * wave.dist;
+          const tailDist = Math.max(0, wave.dist - 76);
+          const tailX = wave.x + Math.cos(wave.angle) * tailDist;
+          const tailY = wave.y + Math.sin(wave.angle) * tailDist;
+
+          const currentSignals = [...signals];
+          for (const signal of currentSignals) {
+            const lineDist = distanceToSegment(signal.x, signal.y, tailX, tailY, headX, headY);
+            if (lineDist < wave.width + signal.r) captureSignal(signal, wave.chain);
+          }
+        }
+        waves = waves.filter((wave) => wave.dist < wave.range);
+
+        for (const particle of particles) {
+          particle.x += particle.vx * dt;
+          particle.y += particle.vy * dt;
+          particle.life -= dt;
+        }
+        particles = particles.filter((p) => p.life > 0);
+
+        spawnTimer += dt;
+        const spawnInterval = Math.max(0.35, 1.25 - score * 0.004);
+        if (spawnTimer >= spawnInterval && signals.length < maxSignals()) {
+          spawnTimer = 0;
+          addSignal(1);
+        }
+
+        if (mods.auto > 0) {
+          autoTimer += dt;
+          const interval = autoIntervals[mods.auto - 1];
+          if (autoTimer >= interval) {
+            autoTimer = 0;
+            spawnWave(rand(26, width - 26), rand(26, height - 26), 0);
+          }
+        }
+
+        signalCountEl.textContent = signals.length;
+      }
+
+      function distanceToSegment(px, py, x1, y1, x2, y2) {
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const lenSq = dx * dx + dy * dy || 1;
+        let t = ((px - x1) * dx + (py - y1) * dy) / lenSq;
+        t = Math.max(0, Math.min(1, t));
+        const x = x1 + t * dx;
+        const y = y1 + t * dy;
+        return Math.hypot(px - x, y - py);
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = 'rgba(8, 18, 16, 0.94)';
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.save();
+        ctx.globalAlpha = 0.12;
+        ctx.strokeStyle = '#86ffd7';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < width; x += 32) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, height);
+          ctx.stroke();
+        }
+        for (let y = 0; y < height; y += 32) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        for (const signal of signals) {
+          signal.pulse += 0.035;
+          const pulse = Math.sin(signal.pulse) * 1.8;
+          ctx.beginPath();
+          ctx.fillStyle = '#d8ffec';
+          ctx.shadowColor = '#86ffd7';
+          ctx.shadowBlur = 12;
+          ctx.arc(signal.x, signal.y, signal.r + pulse * 0.35, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(134,255,215,0.16)';
+          ctx.lineWidth = 1;
+          ctx.arc(signal.x, signal.y, signal.r * 3 + Math.max(0, pulse), 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        for (const wave of waves) {
+          const headX = wave.x + Math.cos(wave.angle) * wave.dist;
+          const headY = wave.y + Math.sin(wave.angle) * wave.dist;
+          const tailDist = Math.max(0, wave.dist - 76);
+          const tailX = wave.x + Math.cos(wave.angle) * tailDist;
+          const tailY = wave.y + Math.sin(wave.angle) * tailDist;
+
+          const alpha = Math.max(0, wave.life);
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(69,223,255,${0.18 + alpha * 0.58})`;
+          ctx.lineWidth = wave.width;
+          ctx.lineCap = 'round';
+          ctx.shadowColor = '#45dfff';
+          ctx.shadowBlur = 16;
+          ctx.moveTo(tailX, tailY);
+          ctx.lineTo(headX, headY);
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(255,61,90,${0.12 + alpha * 0.28})`;
+          ctx.lineWidth = 2;
+          ctx.arc(headX, headY, wave.width * 1.35, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        for (const particle of particles) {
+          const alpha = Math.max(0, particle.life / particle.maxLife);
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(255,228,92,${alpha})`;
+          ctx.shadowColor = '#ffe45c';
+          ctx.shadowBlur = 10;
+          ctx.arc(particle.x, particle.y, 2.2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+
+      function loop(now) {
+        const dt = Math.min(0.033, (now - lastTime) / 1000);
+        lastTime = now;
+        update(dt);
+        draw();
+        requestAnimationFrame(loop);
+      }
+
+      function tap(event) {
+        event.preventDefault();
+        ensureAudio();
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        spawnWave(x, y, 0);
+      }
+
+      function resetGame() {
+        ensureAudio();
+        score = 0;
+        mods = { range: 1, spread: 1, width: 1, chain: 1, echo: 1, auto: 0 };
+        waves = [];
+        particles = [];
+        signals = [];
+        spawnTimer = 0;
+        autoTimer = 0;
+        addSignal(7);
+        updateUI();
+      }
+
+      window.addEventListener('resize', resizeGame);
+      screen.addEventListener('pointerdown', tap);
+      resetBtn.addEventListener('click', resetGame);
+      resizeGame();
+      score = 0;
+      signals = [];
+      addSignal(7);
+      updateUI();
+      requestAnimationFrame(loop);
+    })();
+  </script>
 </body>
 </html>
