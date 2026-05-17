@@ -21,6 +21,7 @@
       --shadow: rgba(0, 0, 0, 0.55);
       --green: #7dff6a;
       --yellow: #ffe45c;
+      --cyan: #45dfff;
     }
 
     * {
@@ -380,12 +381,12 @@
       right: -44px;
       padding: 8px 54px;
       color: #170b11;
-      background: #ffced7;
+      background: var(--cyan);
       font-size: 11px;
       font-weight: 900;
       letter-spacing: 0.14em;
       transform: rotate(8deg);
-      box-shadow: 8px 8px 0 rgba(0,0,0,0.35);
+      box-shadow: 8px 8px 0 rgba(0,0,0,0.35), 0 0 22px rgba(69,223,255,0.28);
       z-index: 2;
     }
 
@@ -641,8 +642,16 @@
       z-index: 1;
     }
 
-    .project-link {
+    .project-actions {
       grid-area: link;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .project-link {
       display: inline-flex;
       align-items: center;
       justify-content: space-between;
@@ -659,6 +668,10 @@
       text-transform: uppercase;
       position: relative;
       z-index: 1;
+    }
+
+    .project-actions .project-link {
+      grid-area: auto;
     }
 
     .project-link:hover {
@@ -908,6 +921,7 @@
       letter-spacing: 0.08em;
       font-size: 12px;
       font-weight: 800;
+
     }
 
     .contact-link span:last-child {
@@ -1171,7 +1185,10 @@
                 <div class="project-status dev">In development</div>
                 <h4>Going My Way</h4>
                 <p>In a world consumed by an insomnia pandemic, you are a train conductor racing through an endless night blizzard. Study strange passengers, solve mysteries and survive the time loop.</p>
-                <a class="project-link" href="https://store.steampowered.com/app/4601470/Going_my_way/" target="_blank" rel="noopener noreferrer">Steam page →</a>
+                <div class="project-actions">
+                  <a class="project-link" href="https://store.steampowered.com/app/4601470/Going_my_way/" target="_blank" rel="noopener noreferrer">Steam page →</a>
+                  <a class="project-link" href="https://t.me/siberiankoalagames" target="_blank" rel="noopener noreferrer">Dev blog →</a>
+                </div>
               </article>
             </div>
           </article>
@@ -1327,7 +1344,7 @@
 
       <footer>
         <span>By Artemy Zen</span>
-        <span>VHS archive interface / draft page</span>
+        <span>2026</span>
       </footer>
     </div>
   </main>
