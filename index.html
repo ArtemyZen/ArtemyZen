@@ -2049,14 +2049,25 @@
         return upgradeOrder.reduce((sum, name) => sum + upgrades[name], 0);
       }
 
-      function currentSpawnInterval() {
+      function upgradeProgressRatio() {
         const total = totalUpgradeLevels();
-        return Math.max(0.01, 0.0575 / Math.pow(2, total));
+        const maxTotal = upgradeOrder.reduce((sum, name) => sum + upgradeConfig[name].max, 0);
+        return maxTotal ? total / maxTotal : 0;
+      }
+
+      function currentSpawnInterval() {
+        const ratio = upgradeProgressRatio();
+        return Math.max(0.12, 0.55 - ratio * 0.43);
+      }
+
+      function currentSpawnBatch() {
+        const total = totalUpgradeLevels();
+        return Math.min(12, 1 + Math.floor(total / 4));
       }
 
       function maxSignals() {
-        const total = totalUpgradeLevels();
-        return Math.min(16 + Math.floor(total / 3) + Math.floor(upgrades.echo / 2), 32);
+        const ratio = upgradeProgressRatio();
+        return Math.min(300, Math.round(50 + 250 * Math.pow(ratio, 1.15)));
       }
 
       function updateUI() {
@@ -2232,7 +2243,7 @@
         spawnTimer += dt;
         if (spawnTimer >= currentSpawnInterval() && signals.length < maxSignals()) {
           spawnTimer = 0;
-          addSignal(1);
+          addSignal(currentSpawnBatch());
         }
 
         if (upgrades.auto > 0) {
@@ -2382,7 +2393,7 @@
           messageEl.textContent = '';
           messageEl.classList.remove('active');
         }
-        addSignal(16);
+        addSignal(50);
         updateUI();
       }
 
@@ -2395,7 +2406,7 @@
       });
       resizeGame();
       signals = [];
-      addSignal(16);
+      addSignal(50);
       updateUI();
       requestAnimationFrame(loop);
     })();
