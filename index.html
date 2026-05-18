@@ -1765,7 +1765,7 @@
               <div class="upgrade-list">
                 <button class="upgrade-row" type="button" data-upgrade="auto"><span>Auto Wave</span><span class="upgrade-progress" aria-label="Auto Wave progress"></span><span class="upgrade-cost">Cost 35</span><span>Launches homing waves from random positions. Upgrades launch them more often.</span></button>
                 <button class="upgrade-row" type="button" data-upgrade="range"><span>Range</span><span class="upgrade-progress" aria-label="Range progress"></span><span class="upgrade-cost">Cost 8</span><span>All waves travel farther before fading out.</span></button>
-                <button class="upgrade-row" type="button" data-upgrade="spread"><span>Spread</span><span class="upgrade-progress" aria-label="Spread progress"></span><span class="upgrade-cost">Cost 12</span><span>Adds more directions to manual and auto waves.</span></button>
+                <button class="upgrade-row" type="button" data-upgrade="spread"><span>Spread</span><span class="upgrade-progress" aria-label="Spread progress"></span><span class="upgrade-cost">Cost 12</span><span>Adds directions step by step: forward, back, right, left and diagonals.</span></button>
                 <button class="upgrade-row" type="button" data-upgrade="width"><span>Width</span><span class="upgrade-progress" aria-label="Width progress"></span><span class="upgrade-cost">Cost 14</span><span>All waves become thicker and easier to hit with.</span></button>
                 <button class="upgrade-row" type="button" data-upgrade="echo"><span>Signal Echo</span><span class="upgrade-progress" aria-label="Signal Echo progress"></span><span class="upgrade-cost">Cost 22</span><span>Captured signals release extra waves from their position.</span></button>
                 <button class="upgrade-row" type="button" data-upgrade="chain"><span>Echo Chain</span><span class="upgrade-progress" aria-label="Echo Chain progress"></span><span class="upgrade-cost">Locked</span><span>Echo waves can continue the chain reaction deeper.</span></button>
@@ -1808,7 +1808,7 @@
       // Each next level grows geometrically; late automation and chains become the main income source.
       const upgradeConfig = {
         range: { label: 'Range', max: 5, base: 8, growth: 2.35 },
-        spread: { label: 'Spread', max: 5, base: 12, growth: 2.45 },
+        spread: { label: 'Spread', max: 7, base: 12, growth: 2.15 },
         width: { label: 'Width', max: 5, base: 14, growth: 2.4 },
         chain: { label: 'Echo Chain', max: 5, base: 18, growth: 2.55 },
         echo: { label: 'Signal Echo', max: 5, base: 22, growth: 2.6 },
@@ -2119,12 +2119,17 @@
         const base = forcedAngle !== null ? forcedAngle : -Math.PI / 2;
 
         // Base click shoots only upward. Spread applies only to manual and auto waves, not signal echo.
+        // Manual final pattern: north, south, east, west, northeast, northwest, southeast, southwest.
         if (!useSpread || upgrades.spread === 0) return [base];
-        if (upgrades.spread === 1) return [base, base - 0.28, base + 0.28];
-        if (upgrades.spread === 2) return [base, base - Math.PI / 2, base + Math.PI / 2];
-        if (upgrades.spread === 3) return [base, base + Math.PI / 2, base + Math.PI, base + Math.PI * 1.5];
-        if (upgrades.spread === 4) return [base, base + Math.PI / 4, base + Math.PI / 2, base + Math.PI * 0.75, base + Math.PI, base + Math.PI * 1.25, base + Math.PI * 1.5, base + Math.PI * 1.75];
-        return [base, base + Math.PI / 6, base + Math.PI / 3, base + Math.PI / 2, base + Math.PI * 0.66, base + Math.PI * 0.83, base + Math.PI, base + Math.PI * 1.16, base + Math.PI * 1.33, base + Math.PI * 1.5, base + Math.PI * 1.66, base + Math.PI * 1.83];
+
+        const directions = [base, base + Math.PI];
+        if (upgrades.spread >= 2) directions.push(base + Math.PI / 2);
+        if (upgrades.spread >= 3) directions.push(base - Math.PI / 2);
+        if (upgrades.spread >= 4) directions.push(base + Math.PI / 4);
+        if (upgrades.spread >= 5) directions.push(base - Math.PI / 4);
+        if (upgrades.spread >= 6) directions.push(base + Math.PI * 0.75);
+        if (upgrades.spread >= 7) directions.push(base - Math.PI * 0.75);
+        return directions;
       }
 
       function nearestSignalAngle(x, y) {
