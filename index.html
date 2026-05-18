@@ -2051,12 +2051,12 @@
 
       function currentSpawnInterval() {
         const total = totalUpgradeLevels();
-        return Math.max(0.08, 0.2875 * Math.pow(0.93, total));
+        return Math.max(0.01, 5 / Math.pow(2, total));
       }
 
       function maxSignals() {
         const total = totalUpgradeLevels();
-        return Math.min(9 + Math.floor(total / 4) + Math.floor(upgrades.echo / 2), 20);
+        return Math.min(16 + Math.floor(total / 3) + Math.floor(upgrades.echo / 2), 32);
       }
 
       function updateUI() {
@@ -2382,7 +2382,7 @@
           messageEl.textContent = '';
           messageEl.classList.remove('active');
         }
-        addSignal(9);
+        addSignal(16);
         updateUI();
       }
 
@@ -2395,7 +2395,7 @@
       });
       resizeGame();
       signals = [];
-      addSignal(9);
+      addSignal(16);
       updateUI();
       requestAnimationFrame(loop);
     })();
