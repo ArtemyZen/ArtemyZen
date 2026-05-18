@@ -1238,30 +1238,33 @@
     }
 
     .upgrade-row.auto-new {
-      color: var(--text);
-      border-color: rgba(69,223,255,0.64);
+      color: #071006;
+      border-color: rgba(125,255,106,0.78);
       background:
-        linear-gradient(90deg, rgba(69,223,255,0.16), rgba(199,53,255,0.11)),
-        rgba(69,223,255,0.045);
-      box-shadow: 0 0 18px rgba(69,223,255,0.18), inset 0 0 0 1px rgba(69,223,255,0.12);
-      animation: autoWavePulse 1.5s infinite;
+        linear-gradient(90deg, rgba(125,255,106,0.95), rgba(125,255,106,0.62)),
+        rgba(125,255,106,0.22);
+      box-shadow: 0 0 18px rgba(125,255,106,0.24), inset 0 0 0 1px rgba(7,16,6,0.16);
+      animation: autoWavePulse 1.05s infinite;
     }
 
-    .upgrade-row.auto-new span:nth-child(3) {
-      color: var(--cyan);
+    .upgrade-row.auto-new .upgrade-pip {
+      border-color: rgba(7,16,6,0.42);
     }
 
+    .upgrade-row.auto-new span:nth-child(3),
     .upgrade-row.auto-new span:nth-child(4) {
-      color: #c9f7ff;
+      color: #071006;
     }
 
     @keyframes autoWavePulse {
       0%, 100% {
-        box-shadow: 0 0 10px rgba(69,223,255,0.14), inset 0 0 0 1px rgba(69,223,255,0.1);
+        box-shadow: 0 0 10px rgba(125,255,106,0.16), inset 0 0 0 1px rgba(7,16,6,0.12);
+        filter: brightness(1);
       }
 
       50% {
-        box-shadow: 0 0 24px rgba(69,223,255,0.32), inset 0 0 0 1px rgba(69,223,255,0.2);
+        box-shadow: 0 0 30px rgba(125,255,106,0.46), inset 0 0 0 1px rgba(7,16,6,0.2);
+        filter: brightness(1.18);
       }
     }
 
@@ -2107,7 +2110,7 @@
             row.disabled = false;
             row.classList.toggle('active', score >= cost);
             row.classList.remove('max');
-            row.classList.toggle('auto-new', name === 'auto' && level === 0);
+            row.classList.toggle('auto-new', name === 'auto' && level === 0 && score >= cost);
           }
         });
       }
@@ -2156,7 +2159,7 @@
         return nearest ? Math.atan2(nearest.y - y, nearest.x - x) : -Math.PI / 2;
       }
 
-      function spawnWave(x, y, chainDepth = 0, forcedAngle = null, silent = false, useSpread = true) {
+      function spawnWave(x, y, chainDepth = 0, forcedAngle = null, silent = false, useSpread = true, waveType = 'manual') {
         const dirs = getDirections(forcedAngle, useSpread);
         const range = [150, 195, 245, 305, 370, 450][upgrades.range];
         const speed = [285, 315, 345, 380, 420, 460][upgrades.range];
@@ -2175,7 +2178,7 @@
             width: waveWidth,
             chainDepth,
             life: 1,
-            color: allUpgradesMaxed() ? randomBrightColor() : null
+            color: allUpgradesMaxed() ? randomBrightColor() : waveType === 'auto' ? '#7dff6a' : waveType === 'echo' ? '#ffe45c' : null
           });
         });
       }
@@ -2206,7 +2209,7 @@
           const base = rand(0, Math.PI * 2);
           for (let i = 0; i < echoCount; i += 1) {
             const angle = base + (Math.PI * 2 * i) / echoCount;
-            spawnWave(signal.x, signal.y, chainDepth + 1, angle, true, false);
+            spawnWave(signal.x, signal.y, chainDepth + 1, angle, true, false, 'echo');
           }
         }
 
@@ -2253,7 +2256,7 @@
             autoTimer = 0;
             const autoX = rand(26, width - 26);
             const autoY = rand(26, height - 26);
-            spawnWave(autoX, autoY, 0, nearestSignalAngle(autoX, autoY));
+            spawnWave(autoX, autoY, 0, nearestSignalAngle(autoX, autoY), false, true, 'auto');
           }
         }
 
