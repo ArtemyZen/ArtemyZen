@@ -1872,7 +1872,6 @@
                 <button class="upgrade-row" type="button" data-upgrade="auto"><span>Auto Wave</span><span class="upgrade-progress" aria-label="Auto Wave progress"></span><span class="upgrade-cost">Cost 35</span><span>Launches homing waves from random positions. Upgrades launch them more often.</span></button>
                 <button class="upgrade-row" type="button" data-upgrade="range"><span>Range</span><span class="upgrade-progress" aria-label="Range progress"></span><span class="upgrade-cost">Cost 8</span><span>All waves travel farther before fading out.</span></button>
                 <button class="upgrade-row" type="button" data-upgrade="spread"><span>Spread</span><span class="upgrade-progress" aria-label="Spread progress"></span><span class="upgrade-cost">Cost 12</span><span>Adds directions step by step: forward, back, right, left and diagonals.</span></button>
-                <button class="upgrade-row" type="button" data-upgrade="width"><span>Width</span><span class="upgrade-progress" aria-label="Width progress"></span><span class="upgrade-cost">Cost 14</span><span>All waves become thicker and easier to hit with.</span></button>
                 <button class="upgrade-row" type="button" data-upgrade="echo"><span>Signal Echo</span><span class="upgrade-progress" aria-label="Signal Echo progress"></span><span class="upgrade-cost">Cost 22</span><span>Captured signals release extra waves from their position.</span></button>
                 <button class="upgrade-row" type="button" data-upgrade="chain"><span>Echo Chain</span><span class="upgrade-progress" aria-label="Echo Chain progress"></span><span class="upgrade-cost">Locked</span><span>Echo waves can continue the chain reaction deeper.</span></button>
               </div>
@@ -1915,16 +1914,15 @@
       // Prices are tuned as a small 30–40 minute idle/clicker arc.
       // Each next level grows geometrically; late automation and chains become the main income source.
       const upgradeConfig = {
-        range: { label: 'Range', max: 3, base: 12, growth: 3.1 },
-        spread: { label: 'Spread', max: 7, base: 14, growth: 2.15 },
-        width: { label: 'Width', max: 2, base: 25, growth: 3.4 },
-        chain: { label: 'Echo Chain', max: 3, base: 70, growth: 3.15 },
-        echo: { label: 'Signal Echo', max: 5, base: 28, growth: 2.55 },
-        auto: { label: 'Auto Wave', max: 5, base: 45, growth: 2.45 }
+        range: { label: 'Range', max: 3, base: 14, growth: 3.2 },
+        spread: { label: 'Spread', max: 7, base: 15, growth: 2.18 },
+        chain: { label: 'Echo Chain', max: 3, base: 85, growth: 3.2 },
+        echo: { label: 'Signal Echo', max: 5, base: 32, growth: 2.6 },
+        auto: { label: 'Auto Wave', max: 5, base: 50, growth: 2.55 }
       };
 
       const autoIntervals = [5, 3, 2, 1, 0.5];
-      const upgradeOrder = ['range', 'spread', 'width', 'echo', 'chain', 'auto'];
+      const upgradeOrder = ['range', 'spread', 'echo', 'chain', 'auto'];
       const brightWaveColors = ['#45dfff', '#ff3d5a', '#ffe45c', '#7dff6a', '#c735ff', '#ff8a3d', '#4d6eff', '#ff4fd8'];
       const signalFragments = [
         'A breath was found in an empty sector, but the source is not registered as alive.',
@@ -1947,7 +1945,6 @@
         'The captured beacon left coordinates beneath the ice of an unknown planet.',
         'The channel reports that the first operators became part of the background long ago.',
         'A weak impulse repeats: “not every point wants to be found”.',
-        'At the edge of the spectrum, a ship was detected, assembled from recorded voices.',
         'The automatic wave returned with a message: “I saw the source”.',
         'The whole network whispers the same thing: “Zen was not a name, but a coordinate”.',
         'All captured points formed an eye, and it immediately closed.',
@@ -1958,7 +1955,7 @@
       let height = 0;
       let dpr = 1;
       let score = 0;
-      let upgrades = { range: 0, spread: 0, width: 0, chain: 0, echo: 0, auto: 0 };
+      let upgrades = { range: 0, spread: 0, chain: 0, echo: 0, auto: 0 };
       let signals = [];
       let waves = [];
       let particles = [];
@@ -2278,7 +2275,7 @@
         const dirs = getDirections(forcedAngle, useSpread);
         const range = [150, 245, 350, 470][upgrades.range];
         const speed = [285, 345, 405, 470][upgrades.range];
-        const waveWidth = [7, 13, 21][upgrades.width];
+        const waveWidth = 10;
         const baseSourceColor = sourceColor || (waveType === 'auto' ? '#7dff6a' : '#45dfff');
 
         if (!silent && chainDepth === 0) playTone('wave');
@@ -2513,7 +2510,7 @@
       function resetGame() {
         ensureAudio();
         score = 0;
-        upgrades = { range: 0, spread: 0, width: 0, chain: 0, echo: 0, auto: 0 };
+        upgrades = { range: 0, spread: 0, chain: 0, echo: 0, auto: 0 };
         waves = [];
         particles = [];
         signals = [];
