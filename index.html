@@ -1334,18 +1334,33 @@
       color: #140d12;
     }
 
+    .upgrade-row.auto-locked {
+      color: var(--text);
+      border-color: rgba(69,223,255,0.48);
+      background:
+        linear-gradient(90deg, rgba(69,223,255,0.085), rgba(199,53,255,0.045)),
+        rgba(69,223,255,0.025);
+      box-shadow: 0 0 14px rgba(69,223,255,0.16), inset 0 0 0 1px rgba(69,223,255,0.09);
+      animation: autoWaveBluePulse 1.8s infinite;
+    }
+
+    .upgrade-row.auto-locked span:nth-child(3) {
+      color: var(--cyan);
+    }
+
     .upgrade-row.auto-new {
       color: #071006;
-      border-color: rgba(125,255,106,0.78);
+      border-color: rgba(69,223,255,0.9);
       background:
         linear-gradient(90deg, rgba(125,255,106,0.95), rgba(125,255,106,0.62)),
         rgba(125,255,106,0.22);
-      box-shadow: 0 0 18px rgba(125,255,106,0.24), inset 0 0 0 1px rgba(7,16,6,0.16);
-      animation: autoWavePulse 1.05s infinite;
+      box-shadow: 0 0 22px rgba(69,223,255,0.36), inset 0 0 0 1px rgba(69,223,255,0.34);
+      animation: autoWaveGreenPulse 1.05s infinite;
     }
 
-    .upgrade-row.auto-new .upgrade-pip {
-      border-color: rgba(7,16,6,0.42);
+    .upgrade-row.auto-new .upgrade-pip,
+    .upgrade-row.auto-locked .upgrade-pip {
+      border-color: rgba(69,223,255,0.42);
     }
 
     .upgrade-row.auto-new span:nth-child(3),
@@ -1353,14 +1368,24 @@
       color: #071006;
     }
 
-    @keyframes autoWavePulse {
+    @keyframes autoWaveBluePulse {
       0%, 100% {
-        box-shadow: 0 0 10px rgba(125,255,106,0.16), inset 0 0 0 1px rgba(7,16,6,0.12);
+        box-shadow: 0 0 10px rgba(69,223,255,0.12), inset 0 0 0 1px rgba(69,223,255,0.08);
+      }
+
+      50% {
+        box-shadow: 0 0 24px rgba(69,223,255,0.32), inset 0 0 0 1px rgba(69,223,255,0.18);
+      }
+    }
+
+    @keyframes autoWaveGreenPulse {
+      0%, 100% {
+        box-shadow: 0 0 14px rgba(69,223,255,0.22), inset 0 0 0 1px rgba(69,223,255,0.2);
         filter: brightness(1);
       }
 
       50% {
-        box-shadow: 0 0 30px rgba(125,255,106,0.46), inset 0 0 0 1px rgba(7,16,6,0.2);
+        box-shadow: 0 0 32px rgba(69,223,255,0.46), inset 0 0 0 1px rgba(69,223,255,0.34);
         filter: brightness(1.18);
       }
     }
@@ -2214,18 +2239,19 @@
           if (name === 'chain' && upgrades.echo <= 0) {
             if (costEl) costEl.textContent = 'Locked';
             row.disabled = true;
-            row.classList.remove('active', 'max', 'auto-new');
+            row.classList.remove('active', 'max', 'auto-new', 'auto-locked');
           } else if (cost === null) {
             if (costEl) costEl.textContent = 'MAX';
             row.disabled = true;
             row.classList.add('max');
-            row.classList.remove('active', 'auto-new');
+            row.classList.remove('active', 'auto-new', 'auto-locked');
           } else {
             if (costEl) costEl.textContent = `Cost ${cost}`;
             row.disabled = false;
             row.classList.toggle('active', score >= cost);
             row.classList.remove('max');
             row.classList.toggle('auto-new', name === 'auto' && level === 0 && score >= cost);
+            row.classList.toggle('auto-locked', name === 'auto' && level === 0 && score < cost);
           }
         });
       }
