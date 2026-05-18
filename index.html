@@ -1810,15 +1810,15 @@
       // Prices are tuned as a small 30–40 minute idle/clicker arc.
       // Each next level grows geometrically; late automation and chains become the main income source.
       const upgradeConfig = {
-        range: { label: 'Range', max: 5, base: 8, growth: 2.35 },
-        spread: { label: 'Spread', max: 7, base: 12, growth: 2.15 },
-        width: { label: 'Width', max: 5, base: 14, growth: 2.4 },
-        chain: { label: 'Echo Chain', max: 5, base: 18, growth: 2.55 },
-        echo: { label: 'Signal Echo', max: 5, base: 22, growth: 2.6 },
-        auto: { label: 'Auto Wave', max: 10, base: 35, growth: 1.9 }
+        range: { label: 'Range', max: 3, base: 12, growth: 3.1 },
+        spread: { label: 'Spread', max: 7, base: 14, growth: 2.15 },
+        width: { label: 'Width', max: 2, base: 25, growth: 3.4 },
+        chain: { label: 'Echo Chain', max: 3, base: 70, growth: 3.15 },
+        echo: { label: 'Signal Echo', max: 5, base: 28, growth: 2.55 },
+        auto: { label: 'Auto Wave', max: 5, base: 45, growth: 2.45 }
       };
 
-      const autoIntervals = [5, 4, 3, 2, 1, 0.7, 0.6, 0.5, 0.4, 0.3];
+      const autoIntervals = [5, 3, 2, 1, 0.5];
       const upgradeOrder = ['range', 'spread', 'width', 'echo', 'chain', 'auto'];
       const brightWaveColors = ['#45dfff', '#ff3d5a', '#ffe45c', '#7dff6a', '#c735ff', '#ff8a3d', '#4d6eff', '#ff4fd8'];
       const signalFragments = [
@@ -1843,18 +1843,8 @@
         'The channel reports that the first operators became part of the background long ago.',
         'A weak impulse repeats: “not every point wants to be found”.',
         'At the edge of the spectrum, a ship was detected, assembled from recorded voices.',
-        'The signal is older than the station, but younger than your last click.',
-        'The wave passes through the noise and brings the smell of ozone and wet dust.',
-        'Someone on the other side of the screen is buying the same modifiers.',
-        'The echo reports that the way out begins inside the captured signal.',
-        'One data packet consists only of pauses between your actions.',
-        'The system found a constellation shaped like a crack in monitor glass.',
         'The automatic wave returned with a message: “I saw the source”.',
-        'For a moment, a door appeared in the center of the field, with no wall around it.',
-        'The last signals sound as if they were sent from a future archive.',
         'The whole network whispers the same thing: “Zen was not a name, but a coordinate”.',
-        'The map finally matched the noise, and the noise turned out to be inhabited.',
-        'An answer came from the depth: “observation completes the shape of the observed”.',
         'All captured points formed an eye, and it immediately closed.',
         'Final signal found: the waves now remember every color of the hidden sky.'
       ];
@@ -2159,11 +2149,12 @@
         return nearest ? Math.atan2(nearest.y - y, nearest.x - x) : -Math.PI / 2;
       }
 
-      function spawnWave(x, y, chainDepth = 0, forcedAngle = null, silent = false, useSpread = true, waveType = 'manual') {
+      function spawnWave(x, y, chainDepth = 0, forcedAngle = null, silent = false, useSpread = true, waveType = 'manual', sourceColor = null) {
         const dirs = getDirections(forcedAngle, useSpread);
-        const range = [150, 195, 245, 305, 370, 450][upgrades.range];
-        const speed = [285, 315, 345, 380, 420, 460][upgrades.range];
-        const waveWidth = [7, 9, 11, 14, 17, 21][upgrades.width];
+        const range = [150, 245, 350, 470][upgrades.range];
+        const speed = [285, 345, 405, 470][upgrades.range];
+        const waveWidth = [7, 13, 21][upgrades.width];
+        const baseSourceColor = sourceColor || (waveType === 'auto' ? '#7dff6a' : '#45dfff');
 
         if (!silent && chainDepth === 0) playTone('wave');
 
@@ -2178,7 +2169,9 @@
             width: waveWidth,
             chainDepth,
             life: 1,
-            color: allUpgradesMaxed() ? randomBrightColor() : waveType === 'auto' ? '#7dff6a' : waveType === 'echo' ? '#ffe45c' : null
+            waveType,
+            sourceColor: baseSourceColor,
+            color: allUpgradesMaxed() ? randomBrightColor() : waveType === 'manual' ? null : baseSourceColor
           });
         });
       }
@@ -2196,7 +2189,7 @@
         }
       }
 
-      function captureSignal(signal, chainDepth) {
+      function captureSignal(signal, chainDepth, sourceType = 'manual', sourceColor = '#45dfff') {
         if (signal.caught) return;
         signal.caught = true;
         score += 1;
@@ -2209,7 +2202,7 @@
           const base = rand(0, Math.PI * 2);
           for (let i = 0; i < echoCount; i += 1) {
             const angle = base + (Math.PI * 2 * i) / echoCount;
-            spawnWave(signal.x, signal.y, chainDepth + 1, angle, true, false, 'echo');
+            spawnWave(signal.x, signal.y, chainDepth + 1, angle, true, false, 'echo', sourceColor);
           }
         }
 
@@ -2218,6 +2211,9 @@
       }
 
       function update(dt) {
+        const hitPriority = { manual: 3, auto: 2, echo: 1 };
+        const pendingHits = new Map();
+
         for (const wave of waves) {
           wave.dist += wave.speed * dt;
           wave.life = 1 - wave.dist / wave.range;
@@ -2228,12 +2224,22 @@
           const tailX = wave.x + Math.cos(wave.angle) * tailDist;
           const tailY = wave.y + Math.sin(wave.angle) * tailDist;
 
-          const currentSignals = [...signals];
-          for (const signal of currentSignals) {
+          for (const signal of signals) {
+            if (signal.caught) continue;
             const lineDist = distanceToSegment(signal.x, signal.y, tailX, tailY, headX, headY);
-            if (lineDist < wave.width + signal.r) captureSignal(signal, wave.chainDepth);
+            if (lineDist < wave.width + signal.r) {
+              const current = pendingHits.get(signal);
+              const nextPriority = hitPriority[wave.waveType] || 0;
+              const currentPriority = current ? hitPriority[current.wave.waveType] || 0 : -1;
+              if (!current || nextPriority > currentPriority) pendingHits.set(signal, { wave });
+            }
           }
         }
+
+        pendingHits.forEach(({ wave }, signal) => {
+          captureSignal(signal, wave.chainDepth, wave.waveType, wave.sourceColor || '#45dfff');
+        });
+
         waves = waves.filter((wave) => wave.dist < wave.range);
 
         for (const particle of particles) {
@@ -2256,7 +2262,7 @@
             autoTimer = 0;
             const autoX = rand(26, width - 26);
             const autoY = rand(26, height - 26);
-            spawnWave(autoX, autoY, 0, nearestSignalAngle(autoX, autoY), false, true, 'auto');
+            spawnWave(autoX, autoY, 0, nearestSignalAngle(autoX, autoY), false, true, 'auto', '#7dff6a');
           }
         }
 
