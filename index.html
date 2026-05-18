@@ -494,7 +494,7 @@
       border: 1px solid rgba(255,61,90,0.34);
       background: rgba(255,61,90,0.07);
       color: var(--text);
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 900;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -622,7 +622,7 @@
       background: var(--green);
       border: 1px solid rgba(0,0,0,0.35);
       box-shadow: 4px 4px 0 rgba(0,0,0,0.32);
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 900;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -862,9 +862,9 @@
       border: 1px solid rgba(255,61,90,0.34);
       background: rgba(255,61,90,0.07);
       color: var(--text);
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 900;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
     }
 
@@ -968,21 +968,38 @@
 
     .signal-game {
       margin-top: 18px;
+      padding: 22px;
       border-color: rgba(69,223,255,0.24);
+    }
+
+    .signal-game .section-head {
+      margin-bottom: 14px;
+      align-items: center;
+    }
+
+    .signal-game h2 {
+      font-size: clamp(28px, 3.8vw, 46px);
+    }
+
+    .signal-game .section-desc {
+      max-width: 420px;
+      font-size: 13px;
+      line-height: 1.35;
     }
 
     .game-shell {
       position: relative;
       z-index: 1;
       display: grid;
-      grid-template-columns: 1fr 280px;
-      gap: 14px;
+      grid-template-columns: minmax(0, 1fr) 240px;
+      gap: 10px;
       align-items: stretch;
     }
 
     .game-screen {
       position: relative;
-      min-height: 380px;
+      height: 100%;
+      min-height: 620px;
       border: 1px solid rgba(195,255,231,0.16);
       background:
         radial-gradient(circle at 30% 20%, rgba(69,223,255,0.08), transparent 34%),
@@ -1015,10 +1032,50 @@
       z-index: 1;
     }
 
+    .signal-message {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      z-index: 3;
+      min-height: 42px;
+      padding: 10px 12px 9px;
+      border: 1px solid rgba(69,223,255,0.28);
+      background:
+        linear-gradient(90deg, rgba(69,223,255,0.1), rgba(199,53,255,0.075)),
+        rgba(0,0,0,0.42);
+      color: #d8ffec;
+      font-size: 11px;
+      line-height: 1.45;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(134,255,215,0.32);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 260ms ease, transform 260ms ease;
+    }
+
+    .signal-message.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .signal-message::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--cyan);
+      box-shadow: 0 0 14px rgba(69,223,255,0.45);
+    }
+
     .game-help {
       position: absolute;
-      left: 14px;
-      bottom: 12px;
+      left: 10px;
+      bottom: 8px;
       z-index: 3;
       color: rgba(216,255,236,0.58);
       font-size: 10px;
@@ -1029,12 +1086,12 @@
 
     .game-panel {
       display: grid;
-      gap: 10px;
+      gap: 6px;
     }
 
     .game-stat,
     .game-upgrades {
-      padding: 16px;
+      padding: 10px;
       border: 1px solid rgba(255,255,255,0.14);
       background:
         linear-gradient(180deg, rgba(255,255,255,0.05), transparent 90px),
@@ -1042,9 +1099,9 @@
     }
 
     .game-label {
-      margin-bottom: 8px;
+      margin-bottom: 5px;
       color: var(--dim);
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 900;
       letter-spacing: 0.16em;
       text-transform: uppercase;
@@ -1052,7 +1109,7 @@
 
     .game-value {
       color: var(--text);
-      font-size: 34px;
+      font-size: 26px;
       line-height: 1;
       font-weight: 900;
       letter-spacing: -0.06em;
@@ -1060,29 +1117,101 @@
     }
 
     .game-small {
+      margin-bottom: 0;
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 11px;
+      line-height: 1.35;
     }
 
     .upgrade-list {
       display: grid;
-      gap: 7px;
-      margin-top: 12px;
+      gap: 5px;
+      margin-top: 8px;
     }
 
     .upgrade-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 8px 9px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3px 8px;
+      padding: 6px 8px;
       border: 1px solid rgba(255,255,255,0.1);
       background: rgba(255,255,255,0.035);
       color: var(--dim);
+      font-family: inherit;
       font-size: 10px;
       font-weight: 900;
       letter-spacing: 0.1em;
+      text-align: left;
       text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .upgrade-row span:nth-child(2),
+    .upgrade-row span:nth-child(3) {
+      text-align: right;
+    }
+
+    .upgrade-progress {
+      display: inline-flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 3px;
+      min-width: 52px;
+    }
+
+    .upgrade-pip {
+      width: 7px;
+      height: 7px;
+      border: 1px solid rgba(255,255,255,0.26);
+      background: rgba(255,255,255,0.045);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.18);
+    }
+
+    .upgrade-pip.filled {
+      background: var(--cyan);
+      border-color: rgba(69,223,255,0.8);
+      box-shadow: 0 0 8px rgba(69,223,255,0.34);
+    }
+
+    .upgrade-row.active .upgrade-pip {
+      border-color: rgba(7,16,6,0.42);
+    }
+
+    .upgrade-row.active .upgrade-pip.filled,
+    .upgrade-row.max .upgrade-pip.filled {
+      background: #071006;
+      border-color: #071006;
+      box-shadow: none;
+    }
+
+    .upgrade-row.max .upgrade-pip {
+      border-color: rgba(20,13,18,0.42);
+    }
+
+    .upgrade-row span:nth-child(3) {
+      color: var(--yellow);
+      font-size: 8px;
+    }
+
+    .upgrade-row span:nth-child(4) {
+      grid-column: 1 / -1;
+      color: var(--muted);
+      font-size: 8px;
+      line-height: 1.2;
+      letter-spacing: 0.06em;
+      text-transform: none;
+    }
+
+    .upgrade-row:hover:not(:disabled) {
+      background: rgba(255,61,90,0.12);
+      border-color: rgba(255,61,90,0.34);
+      color: var(--text);
+    }
+
+    .upgrade-row:disabled {
+      cursor: default;
+      opacity: 0.55;
     }
 
     .upgrade-row.active {
@@ -1092,9 +1221,53 @@
       box-shadow: 0 0 16px rgba(125,255,106,0.14);
     }
 
+    .upgrade-row.active span:nth-child(3),
+    .upgrade-row.active span:nth-child(4) {
+      color: #071006;
+    }
+
+    .upgrade-row.max {
+      color: #140d12;
+      background: var(--cyan);
+      border-color: rgba(0,0,0,0.35);
+    }
+
+    .upgrade-row.max span:nth-child(3),
+    .upgrade-row.max span:nth-child(4) {
+      color: #140d12;
+    }
+
+    .upgrade-row.auto-new {
+      color: var(--text);
+      border-color: rgba(69,223,255,0.64);
+      background:
+        linear-gradient(90deg, rgba(69,223,255,0.16), rgba(199,53,255,0.11)),
+        rgba(69,223,255,0.045);
+      box-shadow: 0 0 18px rgba(69,223,255,0.18), inset 0 0 0 1px rgba(69,223,255,0.12);
+      animation: autoWavePulse 1.5s infinite;
+    }
+
+    .upgrade-row.auto-new span:nth-child(3) {
+      color: var(--cyan);
+    }
+
+    .upgrade-row.auto-new span:nth-child(4) {
+      color: #c9f7ff;
+    }
+
+    @keyframes autoWavePulse {
+      0%, 100% {
+        box-shadow: 0 0 10px rgba(69,223,255,0.14), inset 0 0 0 1px rgba(69,223,255,0.1);
+      }
+
+      50% {
+        box-shadow: 0 0 24px rgba(69,223,255,0.32), inset 0 0 0 1px rgba(69,223,255,0.2);
+      }
+    }
+
     .game-reset {
-      min-height: 36px;
-      padding: 9px 12px 8px;
+      min-height: 30px;
+      padding: 7px 10px 6px;
       border: 1px solid rgba(255,255,255,0.18);
       background: rgba(255,255,255,0.055);
       color: var(--text);
@@ -1108,6 +1281,57 @@
     .game-reset:hover {
       background: rgba(255,61,90,0.14);
       border-color: rgba(255,61,90,0.34);
+    }
+
+    .signal-log {
+      position: relative;
+      z-index: 1;
+      margin-top: 10px;
+      padding: 12px;
+      border: 1px solid rgba(69,223,255,0.18);
+      background:
+        linear-gradient(180deg, rgba(69,223,255,0.055), transparent 110px),
+        rgba(0,0,0,0.24);
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .signal-log-title {
+      margin-bottom: 10px;
+      color: var(--dim);
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .signal-log-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .signal-log-entry {
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.035);
+      color: #d8ffec;
+      font-size: 11px;
+      line-height: 1.45;
+      letter-spacing: 0.04em;
+    }
+
+    .signal-log-entry span {
+      color: var(--cyan);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .signal-log-empty {
+      color: var(--dim);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     @media (max-width: 960px) {
@@ -1187,7 +1411,8 @@
       }
 
       .game-screen {
-        min-height: 340px;
+        height: 420px;
+        min-height: 420px;
       }
 
       footer {
@@ -1511,14 +1736,15 @@
         <div class="section-head">
           <div>
             <div class="kicker">hidden signal game</div>
-            <h2>Catch the Signal</h2>
+            <h2>Hidden Zen Signals</h2>
           </div>
-          <p class="section-desc">Tap the screen to send a wave. Catch signal dots, trigger chain waves and unlock five automatic wave modifiers.</p>
+          <p class="section-desc">Tap the screen to send a wave upward. Catch signal dots, earn points and manually buy wave modifiers.</p>
         </div>
 
         <div class="game-shell">
-          <div class="game-screen" id="signalGameScreen" aria-label="Catch the Signal game area">
+          <div class="game-screen" id="signalGameScreen" aria-label="Hidden Zen Signals game area">
             <canvas id="signalCanvas"></canvas>
+            <div class="signal-message" id="signalMessage" aria-live="polite"></div>
             <div class="game-help">tap / click to transmit wave</div>
           </div>
 
@@ -1531,23 +1757,30 @@
             <div class="game-stat">
               <div class="game-label">signals</div>
               <div class="game-value" id="signalCount">0</div>
-              <p class="game-small" id="waveInfo">Tap the screen. Signals appear gradually and never flood the display.</p>
+              <p class="game-small" id="waveInfo">Tap sends a wave upward. Buy upgrades with captured signals.</p>
             </div>
 
             <div class="game-upgrades">
               <div class="game-label">modifiers</div>
               <div class="upgrade-list">
-                <div class="upgrade-row active" data-mod="range"><span>Range</span><span>1 / 5</span></div>
-                <div class="upgrade-row" data-mod="spread"><span>Spread</span><span>1 / 5</span></div>
-                <div class="upgrade-row" data-mod="width"><span>Width</span><span>1 / 5</span></div>
-                <div class="upgrade-row" data-mod="chain"><span>Chain</span><span>1 / 5</span></div>
-                <div class="upgrade-row" data-mod="echo"><span>Signal Echo</span><span>1 / 5</span></div>
-                <div class="upgrade-row" data-mod="auto"><span>Auto Wave</span><span>0 / 10</span></div>
+                <button class="upgrade-row" type="button" data-upgrade="auto"><span>Auto Wave</span><span class="upgrade-progress" aria-label="Auto Wave progress"></span><span class="upgrade-cost">Cost 35</span><span>Launches homing waves from random positions. Upgrades launch them more often.</span></button>
+                <button class="upgrade-row" type="button" data-upgrade="range"><span>Range</span><span class="upgrade-progress" aria-label="Range progress"></span><span class="upgrade-cost">Cost 8</span><span>All waves travel farther before fading out.</span></button>
+                <button class="upgrade-row" type="button" data-upgrade="spread"><span>Spread</span><span class="upgrade-progress" aria-label="Spread progress"></span><span class="upgrade-cost">Cost 12</span><span>Adds more directions to manual and auto waves.</span></button>
+                <button class="upgrade-row" type="button" data-upgrade="width"><span>Width</span><span class="upgrade-progress" aria-label="Width progress"></span><span class="upgrade-cost">Cost 14</span><span>All waves become thicker and easier to hit with.</span></button>
+                <button class="upgrade-row" type="button" data-upgrade="echo"><span>Signal Echo</span><span class="upgrade-progress" aria-label="Signal Echo progress"></span><span class="upgrade-cost">Cost 22</span><span>Captured signals release extra waves from their position.</span></button>
+                <button class="upgrade-row" type="button" data-upgrade="chain"><span>Echo Chain</span><span class="upgrade-progress" aria-label="Echo Chain progress"></span><span class="upgrade-cost">Locked</span><span>Echo waves can continue the chain reaction deeper.</span></button>
               </div>
             </div>
 
             <button class="game-reset" id="signalReset" type="button">reset signal</button>
           </aside>
+        </div>
+
+        <div class="signal-log" aria-label="Found signal log">
+          <div class="signal-log-title">found signal log</div>
+          <div class="signal-log-list" id="signalLog">
+            <div class="signal-log-empty">No fragments found yet.</div>
+          </div>
         </div>
       </section>
 
@@ -1565,39 +1798,80 @@
       const signalCountEl = document.getElementById('signalCount');
       const infoEl = document.getElementById('waveInfo');
       const resetBtn = document.getElementById('signalReset');
+      const messageEl = document.getElementById('signalMessage');
+      const signalLogEl = document.getElementById('signalLog');
       if (!screen || !canvas) return;
 
       const ctx = canvas.getContext('2d');
-      const waveModCosts = {
-        range: [0, 10, 28, 62, 115],
-        spread: [0, 16, 38, 78, 135],
-        width: [0, 22, 52, 96, 160],
-        chain: [0, 30, 70, 125, 200],
-        echo: [0, 40, 90, 155, 240]
+
+      // Prices are tuned as a small 30–40 minute idle/clicker arc.
+      // Each next level grows geometrically; late automation and chains become the main income source.
+      const upgradeConfig = {
+        range: { label: 'Range', max: 5, base: 8, growth: 2.35 },
+        spread: { label: 'Spread', max: 5, base: 12, growth: 2.45 },
+        width: { label: 'Width', max: 5, base: 14, growth: 2.4 },
+        chain: { label: 'Echo Chain', max: 5, base: 18, growth: 2.55 },
+        echo: { label: 'Signal Echo', max: 5, base: 22, growth: 2.6 },
+        auto: { label: 'Auto Wave', max: 10, base: 35, growth: 1.9 }
       };
-      const autoCosts = [18, 34, 58, 88, 125, 170, 220, 280, 350, 430];
+
       const autoIntervals = [5, 4, 3, 2, 1, 0.7, 0.6, 0.5, 0.4, 0.3];
-      const modNames = {
-        range: 'Range',
-        spread: 'Spread',
-        width: 'Width',
-        chain: 'Chain',
-        echo: 'Signal Echo'
-      };
+      const upgradeOrder = ['range', 'spread', 'width', 'echo', 'chain', 'auto'];
+      const brightWaveColors = ['#45dfff', '#ff3d5a', '#ffe45c', '#7dff6a', '#c735ff', '#ff8a3d', '#4d6eff', '#ff4fd8'];
+      const signalFragments = [
+        'A breath was found in an empty sector, but the source is not registered as alive.',
+        'Something repeats your first impulse with a seven-second delay.',
+        'A map appeared inside the noise, and every star on it was crossed out.',
+        'The signal comes from a point that does not exist in this version of the sky.',
+        'The data packet contains the word “home”, written in a non-human alphabet.',
+        'The observer at the screen has also been marked as part of the transmission.',
+        'Beyond the range, a choir of tiny emergency beacons can be heard.',
+        'One captured impulse knows your name, but pronounces it backwards.',
+        'The void does not answer with an echo, but with an attempt to find the right voice.',
+        'An old light revealed the silhouette of a station rotating without an orbit.',
+        'The signal dots do not appear; they return to their previous positions.',
+        'Each new ray erases one error from someone else’s flight log.',
+        'Deep inside the recording, someone asks you not to amplify the wave after midnight.',
+        'Sleep telemetry was detected, transmitted from the cold side of the moon.',
+        'The signal claims that silence was constructed, not born by itself.',
+        'A hand appeared inside the echo chain, pointing at your cursor.',
+        'One fragment contains a photo of a room you have not seen yet.',
+        'The captured beacon left coordinates beneath the ice of an unknown planet.',
+        'The channel reports that the first operators became part of the background long ago.',
+        'A weak impulse repeats: “not every point wants to be found”.',
+        'At the edge of the spectrum, a ship was detected, assembled from recorded voices.',
+        'The signal is older than the station, but younger than your last click.',
+        'The wave passes through the noise and brings the smell of ozone and wet dust.',
+        'Someone on the other side of the screen is buying the same modifiers.',
+        'The echo reports that the way out begins inside the captured signal.',
+        'One data packet consists only of pauses between your actions.',
+        'The system found a constellation shaped like a crack in monitor glass.',
+        'The automatic wave returned with a message: “I saw the source”.',
+        'For a moment, a door appeared in the center of the field, with no wall around it.',
+        'The last signals sound as if they were sent from a future archive.',
+        'The whole network whispers the same thing: “Zen was not a name, but a coordinate”.',
+        'The map finally matched the noise, and the noise turned out to be inhabited.',
+        'An answer came from the depth: “observation completes the shape of the observed”.',
+        'All captured points formed an eye, and it immediately closed.',
+        'Final signal found: the waves now remember every color of the hidden sky.'
+      ];
 
       let width = 0;
       let height = 0;
       let dpr = 1;
       let score = 0;
-      let mods = { range: 1, spread: 1, width: 1, chain: 1, echo: 1, auto: 0 };
+      let upgrades = { range: 0, spread: 0, width: 0, chain: 0, echo: 0, auto: 0 };
       let signals = [];
       let waves = [];
       let particles = [];
       let lastTime = performance.now();
-      let attractAngle = 0;
       let spawnTimer = 0;
       let autoTimer = 0;
       let audioCtx = null;
+      let signalFragmentIndex = 0;
+      let typingTimer = null;
+      let hideMessageTimer = null;
+      let foundSignalLog = [];
 
       function resizeGame() {
         const rect = screen.getBoundingClientRect();
@@ -1623,107 +1897,208 @@
       function playTone(type) {
         if (!audioCtx) return;
         const now = audioCtx.currentTime;
-        const gain = audioCtx.createGain();
+        const master = audioCtx.createGain();
         const filter = audioCtx.createBiquadFilter();
-        gain.connect(filter);
+        master.connect(filter);
         filter.connect(audioCtx.destination);
         filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(1400, now);
+        filter.frequency.setValueAtTime(1600, now);
 
         if (type === 'wave') {
           const osc = audioCtx.createOscillator();
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(160, now);
-          osc.frequency.exponentialRampToValueAtTime(420, now + 0.12);
-          gain.gain.setValueAtTime(0.0001, now);
-          gain.gain.exponentialRampToValueAtTime(0.075, now + 0.012);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
-          osc.connect(gain);
+          osc.frequency.setValueAtTime(180, now);
+          osc.frequency.exponentialRampToValueAtTime(520, now + 0.14);
+          master.gain.setValueAtTime(0.0001, now);
+          master.gain.exponentialRampToValueAtTime(0.06, now + 0.012);
+          master.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+          osc.connect(master);
           osc.start(now);
-          osc.stop(now + 0.2);
+          osc.stop(now + 0.22);
           return;
         }
 
         if (type === 'hit') {
           const osc = audioCtx.createOscillator();
           osc.type = 'triangle';
-          osc.frequency.setValueAtTime(760, now);
-          osc.frequency.exponentialRampToValueAtTime(1220, now + 0.055);
-          gain.gain.setValueAtTime(0.0001, now);
-          gain.gain.exponentialRampToValueAtTime(0.055, now + 0.008);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.13);
-          osc.connect(gain);
+          osc.frequency.setValueAtTime(720, now);
+          osc.frequency.exponentialRampToValueAtTime(1280, now + 0.06);
+          master.gain.setValueAtTime(0.0001, now);
+          master.gain.exponentialRampToValueAtTime(0.052, now + 0.008);
+          master.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+          osc.connect(master);
           osc.start(now);
-          osc.stop(now + 0.15);
+          osc.stop(now + 0.16);
+          return;
+        }
+
+        if (type === 'type') {
+          const osc = audioCtx.createOscillator();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(rand(620, 980), now);
+          filter.frequency.setValueAtTime(1100, now);
+          master.gain.setValueAtTime(0.0001, now);
+          master.gain.exponentialRampToValueAtTime(0.012, now + 0.004);
+          master.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+          osc.connect(master);
+          osc.start(now);
+          osc.stop(now + 0.04);
           return;
         }
 
         if (type === 'upgrade') {
           [0, 0.07, 0.14].forEach((offset, index) => {
             const osc = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
+            const gain = audioCtx.createGain();
             osc.type = 'sine';
             osc.frequency.setValueAtTime([440, 660, 990][index], now + offset);
-            g.gain.setValueAtTime(0.0001, now + offset);
-            g.gain.exponentialRampToValueAtTime(0.052, now + offset + 0.012);
-            g.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.16);
-            osc.connect(g);
-            g.connect(filter);
+            gain.gain.setValueAtTime(0.0001, now + offset);
+            gain.gain.exponentialRampToValueAtTime(0.048, now + offset + 0.012);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.18);
+            osc.connect(gain);
+            gain.connect(filter);
             osc.start(now + offset);
-            osc.stop(now + offset + 0.18);
+            osc.stop(now + offset + 0.2);
           });
         }
       }
 
-      function getWaveModLevel(name) {
-        const costs = waveModCosts[name];
-        let next = 1;
-        for (let i = 0; i < costs.length; i += 1) {
-          if (score >= costs[i]) next = i + 1;
-        }
-        return Math.min(next, 5);
+      function upgradeCost(name) {
+        const config = upgradeConfig[name];
+        const level = upgrades[name];
+        if (level >= config.max) return null;
+        return Math.round(config.base * Math.pow(config.growth, level));
       }
 
-      function getAutoLevel() {
-        let next = 0;
-        for (let i = 0; i < autoCosts.length; i += 1) {
-          if (score >= autoCosts[i]) next = i + 1;
-        }
-        return Math.min(next, 10);
+      function allUpgradesMaxed() {
+        return upgradeOrder.every((name) => upgrades[name] >= upgradeConfig[name].max);
       }
 
-      function refreshMods() {
-        let upgraded = false;
-        Object.keys(waveModCosts).forEach((name) => {
-          const next = getWaveModLevel(name);
-          if (next > mods[name]) upgraded = true;
-          mods[name] = next;
+      function randomBrightColor() {
+        return brightWaveColors[Math.floor(Math.random() * brightWaveColors.length)];
+      }
+
+      function buyUpgrade(name) {
+        ensureAudio();
+        if (name === 'chain' && upgrades.echo <= 0) return;
+        const cost = upgradeCost(name);
+        if (cost === null || score < cost) return;
+        score -= cost;
+        upgrades[name] += 1;
+        playTone('upgrade');
+        showSignalFragment();
+        updateUI();
+      }
+
+      function showSignalFragment() {
+        if (!messageEl) return;
+        const fragment = signalFragments[signalFragmentIndex] || 'Further data is damaged and repeats itself.';
+        signalFragmentIndex += 1;
+        const prefix = 'Signal found: ';
+        addSignalLogEntry(fragment);
+        let index = 0;
+        clearTimeout(typingTimer);
+        clearTimeout(hideMessageTimer);
+        messageEl.textContent = prefix;
+        messageEl.classList.add('active');
+
+        const typeNext = () => {
+          if (index < fragment.length) {
+            const char = fragment[index];
+            messageEl.textContent += char;
+            if (char.trim()) playTone('type');
+            index += 1;
+            typingTimer = setTimeout(typeNext, 34);
+          } else {
+            hideMessageTimer = setTimeout(() => {
+              messageEl.classList.remove('active');
+            }, 5000);
+          }
+        };
+
+        typingTimer = setTimeout(typeNext, 220);
+      }
+
+      function addSignalLogEntry(fragment) {
+        if (!signalLogEl) return;
+        foundSignalLog.push(fragment);
+        signalLogEl.innerHTML = '';
+
+        foundSignalLog.forEach((item, index) => {
+          const entry = document.createElement('div');
+          entry.className = 'signal-log-entry';
+
+          const label = document.createElement('span');
+          label.textContent = `Signal ${String(index + 1).padStart(2, '0')}: `;
+
+          entry.appendChild(label);
+          entry.appendChild(document.createTextNode(item));
+          signalLogEl.appendChild(entry);
         });
-        const nextAuto = getAutoLevel();
-        if (nextAuto > mods.auto) upgraded = true;
-        mods.auto = nextAuto;
-        if (upgraded) playTone('upgrade');
+
+        signalLogEl.parentElement.scrollTop = signalLogEl.parentElement.scrollHeight;
       }
 
-      function updateUI() {
-        refreshMods();
-        scoreEl.textContent = score;
-        signalCountEl.textContent = signals.length;
-        const autoText = mods.auto > 0 ? `Auto wave every ${autoIntervals[mods.auto - 1]}s.` : 'Auto wave unlocks at 18 points.';
-        infoEl.textContent = `Signal field stable. ${autoText}`;
+      function resetSignalLog() {
+        foundSignalLog = [];
+        if (!signalLogEl) return;
+        signalLogEl.innerHTML = '<div class="signal-log-empty">No fragments found yet.</div>';
+      }
 
-        document.querySelectorAll('.upgrade-row').forEach((row) => {
-          const name = row.getAttribute('data-mod');
-          const value = name === 'auto' ? mods.auto : mods[name];
-          const max = name === 'auto' ? 10 : 5;
-          const label = row.querySelector('span:last-child');
-          if (label) label.textContent = value + ' / ' + max;
-          row.classList.toggle('active', value > (name === 'auto' ? 0 : 1));
-        });
+      function totalUpgradeLevels() {
+        return upgradeOrder.reduce((sum, name) => sum + upgrades[name], 0);
+      }
+
+      function currentSpawnInterval() {
+        const total = totalUpgradeLevels();
+        return Math.max(0.08, 0.2875 * Math.pow(0.93, total));
       }
 
       function maxSignals() {
-        return Math.min(8 + Math.floor(score / 35) + mods.echo, 18);
+        const total = totalUpgradeLevels();
+        return Math.min(9 + Math.floor(total / 4) + Math.floor(upgrades.echo / 2), 20);
+      }
+
+      function updateUI() {
+        scoreEl.textContent = score;
+        signalCountEl.textContent = signals.length;
+
+        const autoText = upgrades.auto > 0 ? `Auto wave every ${autoIntervals[upgrades.auto - 1]}s.` : 'Auto wave is locked until you buy it.';
+        infoEl.textContent = autoText;
+
+        document.querySelectorAll('.upgrade-row').forEach((row) => {
+          const name = row.getAttribute('data-upgrade');
+          const config = upgradeConfig[name];
+          const level = upgrades[name];
+          const cost = upgradeCost(name);
+          const costEl = row.querySelector('.upgrade-cost');
+          const progress = row.querySelector('.upgrade-progress');
+          if (progress) {
+            progress.innerHTML = '';
+            progress.setAttribute('aria-label', `${config.label} level ${level} of ${config.max}`);
+            for (let i = 0; i < config.max; i += 1) {
+              const pip = document.createElement('span');
+              pip.className = 'upgrade-pip' + (i < level ? ' filled' : '');
+              progress.appendChild(pip);
+            }
+          }
+          if (name === 'chain' && upgrades.echo <= 0) {
+            if (costEl) costEl.textContent = 'Locked';
+            row.disabled = true;
+            row.classList.remove('active', 'max', 'auto-new');
+          } else if (cost === null) {
+            if (costEl) costEl.textContent = 'MAX';
+            row.disabled = true;
+            row.classList.add('max');
+            row.classList.remove('active', 'auto-new');
+          } else {
+            if (costEl) costEl.textContent = `Cost ${cost}`;
+            row.disabled = false;
+            row.classList.toggle('active', score >= cost);
+            row.classList.remove('max');
+            row.classList.toggle('auto-new', name === 'auto' && level === 0);
+          }
+        });
       }
 
       function addSignal(count = 1) {
@@ -1740,37 +2115,38 @@
         updateUI();
       }
 
-      function getDirections(x, y, forcedAngle = null) {
-        if (forcedAngle !== null) return [forcedAngle];
+      function getDirections(forcedAngle = null, useSpread = true) {
+        const base = forcedAngle !== null ? forcedAngle : -Math.PI / 2;
 
-        if (mods.spread === 1) {
-          let nearest = null;
-          let best = Infinity;
-          for (const signal of signals) {
-            const dist = Math.hypot(signal.x - x, signal.y - y);
-            if (dist < best) {
-              best = dist;
-              nearest = signal;
-            }
-          }
-          if (nearest) return [Math.atan2(nearest.y - y, nearest.x - x)];
-          attractAngle += 0.7;
-          return [attractAngle];
-        }
-
-        if (mods.spread === 2) return [0, Math.PI];
-        if (mods.spread === 3) return [0, Math.PI / 2, Math.PI, Math.PI * 1.5];
-        if (mods.spread === 4) return [0, Math.PI / 4, Math.PI / 2, Math.PI * 0.75, Math.PI, Math.PI * 1.25, Math.PI * 1.5, Math.PI * 1.75];
-        return [0, Math.PI / 6, Math.PI / 3, Math.PI / 2, Math.PI * 0.66, Math.PI * 0.83, Math.PI, Math.PI * 1.16, Math.PI * 1.33, Math.PI * 1.5, Math.PI * 1.66, Math.PI * 1.83];
+        // Base click shoots only upward. Spread applies only to manual and auto waves, not signal echo.
+        if (!useSpread || upgrades.spread === 0) return [base];
+        if (upgrades.spread === 1) return [base, base - 0.28, base + 0.28];
+        if (upgrades.spread === 2) return [base, base - Math.PI / 2, base + Math.PI / 2];
+        if (upgrades.spread === 3) return [base, base + Math.PI / 2, base + Math.PI, base + Math.PI * 1.5];
+        if (upgrades.spread === 4) return [base, base + Math.PI / 4, base + Math.PI / 2, base + Math.PI * 0.75, base + Math.PI, base + Math.PI * 1.25, base + Math.PI * 1.5, base + Math.PI * 1.75];
+        return [base, base + Math.PI / 6, base + Math.PI / 3, base + Math.PI / 2, base + Math.PI * 0.66, base + Math.PI * 0.83, base + Math.PI, base + Math.PI * 1.16, base + Math.PI * 1.33, base + Math.PI * 1.5, base + Math.PI * 1.66, base + Math.PI * 1.83];
       }
 
-      function spawnWave(x, y, chain = 0, forcedAngle = null, silent = false) {
-        const dirs = getDirections(x, y, forcedAngle);
-        const range = [170, 220, 280, 350, 440][mods.range - 1] * (chain > 0 ? 0.68 : 1);
-        const speed = [300, 330, 365, 400, 440][mods.range - 1];
-        const widthWave = [8, 11, 14, 17, 21][mods.width - 1];
+      function nearestSignalAngle(x, y) {
+        let nearest = null;
+        let best = Infinity;
+        for (const signal of signals) {
+          const dist = Math.hypot(signal.x - x, signal.y - y);
+          if (dist < best) {
+            best = dist;
+            nearest = signal;
+          }
+        }
+        return nearest ? Math.atan2(nearest.y - y, nearest.x - x) : -Math.PI / 2;
+      }
 
-        if (!silent && chain === 0) playTone('wave');
+      function spawnWave(x, y, chainDepth = 0, forcedAngle = null, silent = false, useSpread = true) {
+        const dirs = getDirections(forcedAngle, useSpread);
+        const range = [150, 195, 245, 305, 370, 450][upgrades.range];
+        const speed = [285, 315, 345, 380, 420, 460][upgrades.range];
+        const waveWidth = [7, 9, 11, 14, 17, 21][upgrades.width];
+
+        if (!silent && chainDepth === 0) playTone('wave');
 
         dirs.forEach((angle) => {
           waves.push({
@@ -1780,9 +2156,10 @@
             dist: 0,
             range,
             speed,
-            width: widthWave,
-            chain,
-            life: 1
+            width: waveWidth,
+            chainDepth,
+            life: 1,
+            color: allUpgradesMaxed() ? randomBrightColor() : null
           });
         });
       }
@@ -1807,13 +2184,13 @@
         playTone('hit');
         burst(signal.x, signal.y);
 
-        const echoCount = Math.min(1 + mods.echo, 6);
-        const maxChain = mods.chain;
-        if (chainDepth < maxChain) {
+        const maxChainDepth = upgrades.chain + 1;
+        const echoCount = upgrades.echo;
+        if (echoCount > 0 && chainDepth < maxChainDepth) {
           const base = rand(0, Math.PI * 2);
           for (let i = 0; i < echoCount; i += 1) {
             const angle = base + (Math.PI * 2 * i) / echoCount;
-            spawnWave(signal.x, signal.y, chainDepth + 1, angle, true);
+            spawnWave(signal.x, signal.y, chainDepth + 1, angle, true, false);
           }
         }
 
@@ -1835,7 +2212,7 @@
           const currentSignals = [...signals];
           for (const signal of currentSignals) {
             const lineDist = distanceToSegment(signal.x, signal.y, tailX, tailY, headX, headY);
-            if (lineDist < wave.width + signal.r) captureSignal(signal, wave.chain);
+            if (lineDist < wave.width + signal.r) captureSignal(signal, wave.chainDepth);
           }
         }
         waves = waves.filter((wave) => wave.dist < wave.range);
@@ -1848,18 +2225,19 @@
         particles = particles.filter((p) => p.life > 0);
 
         spawnTimer += dt;
-        const spawnInterval = Math.max(0.35, 1.25 - score * 0.004);
-        if (spawnTimer >= spawnInterval && signals.length < maxSignals()) {
+        if (spawnTimer >= currentSpawnInterval() && signals.length < maxSignals()) {
           spawnTimer = 0;
           addSignal(1);
         }
 
-        if (mods.auto > 0) {
+        if (upgrades.auto > 0) {
           autoTimer += dt;
-          const interval = autoIntervals[mods.auto - 1];
+          const interval = autoIntervals[upgrades.auto - 1];
           if (autoTimer >= interval) {
             autoTimer = 0;
-            spawnWave(rand(26, width - 26), rand(26, height - 26), 0);
+            const autoX = rand(26, width - 26);
+            const autoY = rand(26, height - 26);
+            spawnWave(autoX, autoY, 0, nearestSignalAngle(autoX, autoY));
           }
         }
 
@@ -1875,6 +2253,14 @@
         const x = x1 + t * dx;
         const y = y1 + t * dy;
         return Math.hypot(px - x, y - py);
+      }
+
+      function hexToRgba(hex, alpha) {
+        const raw = hex.replace('#', '');
+        const r = parseInt(raw.slice(0, 2), 16);
+        const g = parseInt(raw.slice(2, 4), 16);
+        const b = parseInt(raw.slice(4, 6), 16);
+        return `rgba(${r},${g},${b},${alpha})`;
       }
 
       function draw() {
@@ -1926,19 +2312,20 @@
           const tailY = wave.y + Math.sin(wave.angle) * tailDist;
 
           const alpha = Math.max(0, wave.life);
+          const waveColor = wave.color || '#45dfff';
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(69,223,255,${0.18 + alpha * 0.58})`;
+          ctx.strokeStyle = wave.color ? hexToRgba(waveColor, 0.18 + alpha * 0.66) : `rgba(69,223,255,${0.18 + alpha * 0.58})`;
           ctx.lineWidth = wave.width;
           ctx.lineCap = 'round';
-          ctx.shadowColor = '#45dfff';
-          ctx.shadowBlur = 16;
+          ctx.shadowColor = waveColor;
+          ctx.shadowBlur = wave.color ? 22 : 16;
           ctx.moveTo(tailX, tailY);
           ctx.lineTo(headX, headY);
           ctx.stroke();
           ctx.shadowBlur = 0;
 
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(255,61,90,${0.12 + alpha * 0.28})`;
+          ctx.strokeStyle = wave.color ? hexToRgba(waveColor, 0.16 + alpha * 0.34) : `rgba(255,61,90,${0.12 + alpha * 0.28})`;
           ctx.lineWidth = 2;
           ctx.arc(headX, headY, wave.width * 1.35, 0, Math.PI * 2);
           ctx.stroke();
@@ -1976,23 +2363,34 @@
       function resetGame() {
         ensureAudio();
         score = 0;
-        mods = { range: 1, spread: 1, width: 1, chain: 1, echo: 1, auto: 0 };
+        upgrades = { range: 0, spread: 0, width: 0, chain: 0, echo: 0, auto: 0 };
         waves = [];
         particles = [];
         signals = [];
         spawnTimer = 0;
         autoTimer = 0;
-        addSignal(7);
+        signalFragmentIndex = 0;
+        resetSignalLog();
+        clearTimeout(typingTimer);
+        clearTimeout(hideMessageTimer);
+        if (messageEl) {
+          messageEl.textContent = '';
+          messageEl.classList.remove('active');
+        }
+        addSignal(9);
         updateUI();
       }
 
       window.addEventListener('resize', resizeGame);
       screen.addEventListener('pointerdown', tap);
       resetBtn.addEventListener('click', resetGame);
+      upgradeOrder.forEach((name) => {
+        const button = document.querySelector(`[data-upgrade="${name}"]`);
+        if (button) button.addEventListener('click', () => buyUpgrade(name));
+      });
       resizeGame();
-      score = 0;
       signals = [];
-      addSignal(7);
+      addSignal(9);
       updateUI();
       requestAnimationFrame(loop);
     })();
