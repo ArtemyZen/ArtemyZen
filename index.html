@@ -1882,9 +1882,9 @@
         </div>
 
         <div class="signal-log" aria-label="Found signal log">
-          <div class="signal-log-title">found signal log</div>
+          <div class="signal-log-title">transmission log</div>
           <div class="signal-log-list" id="signalLog">
-            <div class="signal-log-empty">No fragments found yet.</div>
+            <div class="signal-log-empty">No transmissions received yet.</div>
           </div>
         </div>
       </section>
@@ -1925,30 +1925,29 @@
       const upgradeOrder = ['range', 'spread', 'echo', 'chain', 'auto'];
       const brightWaveColors = ['#45dfff', '#ff3d5a', '#ffe45c', '#7dff6a', '#c735ff', '#ff8a3d', '#4d6eff', '#ff4fd8'];
       const signalFragments = [
-        'A breath was found in an empty sector, but the source is not registered as alive.',
-        'Something repeats your first impulse with a seven-second delay.',
-        'A map appeared inside the noise, and every star on it was crossed out.',
-        'The signal comes from a point that does not exist in this version of the sky.',
-        'The data packet contains the word “home”, written in a non-human alphabet.',
-        'The observer at the screen has also been marked as part of the transmission.',
-        'Beyond the range, a choir of tiny emergency beacons can be heard.',
-        'One captured impulse knows your name, but pronounces it backwards.',
-        'The void does not answer with an echo, but with an attempt to find the right voice.',
-        'An old light revealed the silhouette of a station rotating without an orbit.',
-        'The signal dots do not appear; they return to their previous positions.',
-        'Each new ray erases one error from someone else’s flight log.',
-        'Deep inside the recording, someone asks you not to amplify the wave after midnight.',
-        'Sleep telemetry was detected, transmitted from the cold side of the moon.',
-        'The signal claims that silence was constructed, not born by itself.',
-        'A hand appeared inside the echo chain, pointing at your cursor.',
-        'One fragment contains a photo of a room you have not seen yet.',
-        'The captured beacon left coordinates beneath the ice of an unknown planet.',
-        'The channel reports that the first operators became part of the background long ago.',
-        'A weak impulse repeats: “not every point wants to be found”.',
-        'The automatic wave returned with a message: “I saw the source”.',
-        'The whole network whispers the same thing: “Zen was not a name, but a coordinate”.',
-        'All captured points formed an eye, and it immediately closed.',
-        'Final signal found: the waves now remember every color of the hidden sky.'
+        'Day 01. We crossed the white seam at 03:17, and every star behind us went out at once.',
+        'The navigation room still shows our old course, but the windows show a black ocean moving upward.',
+        'Something huge passed under the hull without touching us, and all metal surfaces rang like wet glass.',
+        'Crewman Vale opened the airlock report and found it already signed by everyone who will die tomorrow.',
+        'The engines are running in reverse, but the ship keeps moving forward into a place with no distance.',
+        'We found frost inside the medical bay, shaped like handprints on the ceiling.',
+        'The captain ordered silence after the intercom began speaking in the voices of sleeping crew members.',
+        'Our clocks disagree by hours now, and one of them is counting down to a date that has never existed.',
+        'A corridor appeared between decks three and four; it is longer than the entire ship and smells of rain.',
+        'Engineer Sorin walked into that corridor with a flare, and his shadow came back alone.',
+        'The food printers produced black sand this morning, warm enough to steam in the trays.',
+        'We heard knocking from outside the observation dome, although there is nothing there for sound to travel through.',
+        'The anomaly is not following us; I think we are becoming part of its interior.',
+        'The children in the sleep pods are dreaming the same room, and something in that room is learning their names.',
+        'Captain Ilyra has locked herself on the bridge and keeps apologizing to someone called the First Witness.',
+        'The hull cameras now show our ship from above, below, and from inside our own bones.',
+        'We tried to turn back, but the return vector pointed directly into the crew quarters.',
+        'Vale is alive again, standing behind the glass in engineering, tapping the death report against the window.',
+        'The black ocean has reached deck two; it does not flood rooms, it replaces them with memories we never had.',
+        'I am sending this because the ship is still transmitting after every antenna melted into ash.',
+        'There are only five of us left, and the corridor is singing our voices before we speak.',
+        'If anyone receives this, do not follow our beacon; it is no longer calling for rescue.',
+        'Final transmission. We see Earth ahead, but it is dark, upside down, and waiting with our lights already on.'
       ];
 
       let width = 0;
@@ -2087,9 +2086,9 @@
 
       function showSignalFragment() {
         if (!messageEl) return;
-        const fragment = signalFragments[signalFragmentIndex] || 'Further data is damaged and repeats itself.';
+        const fragment = signalFragments[signalFragmentIndex] || 'Further transmission data is damaged and repeats itself.';
         signalFragmentIndex += 1;
-        const prefix = 'Signal found: ';
+        const prefix = 'Transmission received: ';
         addSignalLogEntry(fragment);
         let index = 0;
         clearTimeout(typingTimer);
@@ -2124,7 +2123,7 @@
           entry.className = 'signal-log-entry';
 
           const label = document.createElement('span');
-          label.textContent = `Signal ${String(index + 1).padStart(2, '0')}: `;
+          label.textContent = `Message ${String(index + 1).padStart(2, '0')}: `;
 
           entry.appendChild(label);
           entry.appendChild(document.createTextNode(item));
@@ -2137,7 +2136,7 @@
       function resetSignalLog() {
         foundSignalLog = [];
         if (!signalLogEl) return;
-        signalLogEl.innerHTML = '<div class="signal-log-empty">No fragments found yet.</div>';
+        signalLogEl.innerHTML = '<div class="signal-log-empty">No transmissions received yet.</div>';
       }
 
       function totalUpgradeLevels() {
