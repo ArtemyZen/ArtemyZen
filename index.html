@@ -555,10 +555,11 @@
     .project-card {
       display: grid;
       grid-template-columns: 150px 1fr;
-      grid-template-rows: auto auto 1fr auto;
+      grid-template-rows: auto auto auto 1fr auto;
       grid-template-areas:
         "media status"
         "media title"
+        "media company"
         "media text"
         "media link";
       gap: 0 16px;
@@ -648,6 +649,23 @@
       z-index: 1;
     }
 
+    .project-company {
+      grid-area: company;
+      display: inline-flex;
+      width: fit-content;
+      margin: 0 0 10px;
+      padding: 5px 8px 4px;
+      color: var(--cyan);
+      border: 1px solid rgba(69,223,255,0.18);
+      background: rgba(69,223,255,0.045);
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+
     .project-card p {
       grid-area: text;
       margin-bottom: 14px;
@@ -668,6 +686,7 @@
     }
 
     .project-link {
+      grid-area: link;
       display: inline-flex;
       align-items: center;
       justify-content: space-between;
@@ -1588,6 +1607,7 @@
           "media"
           "status"
           "title"
+          "company"
           "text"
           "link";
       }
@@ -1736,6 +1756,7 @@
                 </div>
                 <div class="project-status">Released</div>
                 <h4>Ratten Reich</h4>
+                <div class="project-company">Metal Adler Studio</div>
                 <p>RTS focused on realistic combat in a unique steampunk / dieselpunk world ripped apart by an ongoing war between rats, mice, cockroaches and lizards.</p>
                 <a class="project-link" href="https://store.steampowered.com/app/1717250/Ratten_Reich/" target="_blank" rel="noopener noreferrer">Steam page →</a>
               </article>
@@ -1746,6 +1767,7 @@
                 </div>
                 <div class="project-status">Released</div>
                 <h4>Undying Symphony</h4>
+                <div class="project-company">Siberian Koala</div>
                 <p>A story about the challenges that Leningrad people faced during the Siege, showing one of the most tragic episodes of Leningrad history.</p>
                 <a class="project-link" href="https://store.steampowered.com/app/1591760/Undying_Symphony/" target="_blank" rel="noopener noreferrer">Steam page →</a>
               </article>
@@ -1756,6 +1778,7 @@
                 </div>
                 <div class="project-status dev">In development</div>
                 <h4>Steal Out</h4>
+                <div class="project-company">Siberian Koala</div>
                 <p>A fun competitive game where you become a daring thief chasing the ultimate score while valuables are guarded, time is running out and rivals are scheming.</p>
                 <a class="project-link" href="https://store.steampowered.com/app/3698900/Steal_Out/" target="_blank" rel="noopener noreferrer">Steam page →</a>
               </article>
@@ -1765,7 +1788,8 @@
                   <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4601470/3ff592523c5aa8c8dc91b83e552a51b72bc5ffc7/header.jpg?t=1778654242" alt="Going My Way Steam capsule" loading="lazy" />
                 </div>
                 <div class="project-status dev">In development</div>
-                <h4>Going My Way</h4>
+                <h4>Going My Way?</h4>
+                <div class="project-company">Siberian Koala</div>
                 <p>In a world consumed by an insomnia pandemic, you are a train conductor racing through an endless night blizzard. Study strange passengers, solve mysteries and survive the time loop.</p>
                 <div class="project-actions">
                   <a class="project-link" href="https://store.steampowered.com/app/4601470/Going_my_way/" target="_blank" rel="noopener noreferrer">Steam page →</a>
@@ -1786,7 +1810,7 @@
                 </div>
                 <div class="project-status">Released</div>
                 <h4>Agent Brain</h4>
-                <p>A released solo puzzle game built around tricky levels, compact interactions and playful problem solving.</p>
+                <p>Puzzle is a groundbreaking puzzle platformer that challenges you to think outside the box in ways you never imagined. Explore the limits of your creativity and uncover its well-hidden secrets.</p>
                 <a class="project-link" href="https://store.steampowered.com/app/2863350/Agent_Brain_Tricky_Puzzles/" target="_blank" rel="noopener noreferrer">Steam page →</a>
               </article>
 
@@ -1796,7 +1820,7 @@
                 </div>
                 <div class="project-status">Released</div>
                 <h4>Two Against the Legion</h4>
-                <p>A released solo / experimental game project from my personal catalogue.</p>
+                <p>One PC. Two players. Two perspectives of view. And many puzzles that can be solved only by working together. Defeat the rebellious robots and find out what happened at the nuclear plant. Play online with Steam Remote Play.</p>
                 <a class="project-link" href="https://store.steampowered.com/app/1612900/Two_Against_the_Legion/" target="_blank" rel="noopener noreferrer">Steam page →</a>
               </article>
             </div>
